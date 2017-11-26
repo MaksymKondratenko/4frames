@@ -8,19 +8,28 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfig;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 @Configuration
 @EnableWebMvc
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
-            "classpath:/resources/", "classpath:/static/", "classpath:/public/"};
+            "classpath:/resources/", "classpath:/resources/templates/", "classpath:/public/"};
 
     @Bean
-    public ViewResolver getViewResolver() {
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setSuffix(".html");
+    public ViewResolver viewResolver() {
+        FreeMarkerViewResolver resolver= new FreeMarkerViewResolver();
+        resolver.setPrefix("/resources/templates");
+        resolver.setSuffix(".ftl");
         return resolver;
+    }
+
+    @Bean
+    public FreeMarkerConfig freeMarkerConfig() {
+        return new FreeMarkerConfigurer();
     }
 
     @Override
